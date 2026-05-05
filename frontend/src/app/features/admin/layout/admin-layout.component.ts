@@ -16,7 +16,7 @@ import { AuthService } from '../../../core/services/auth.service';
           <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
           <a routerLink="/admin/campaigns" routerLinkActive="active">Campagnes</a>
           <a routerLink="/admin/email-templates" routerLinkActive="active">Templates email</a>
-          <a routerLink="/admin/landing-pages" routerLinkActive="active">Pages formation</a>
+          <a routerLink="/admin/landing-pages" routerLinkActive="active">Pages sensibilisation</a>
           <a routerLink="/admin/quizzes" routerLinkActive="active">Quiz</a>
           <a routerLink="/admin/user-import" routerLinkActive="active">Import utilisateurs</a>
           <a routerLink="/admin/reports" routerLinkActive="active">Rapports</a>

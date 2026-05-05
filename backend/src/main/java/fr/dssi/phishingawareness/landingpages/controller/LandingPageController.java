@@ -2,7 +2,6 @@ package fr.dssi.phishingawareness.landingpages.controller;
 
 import fr.dssi.phishingawareness.landingpages.dto.LandingPageDtos.LandingPageRequest;
 import fr.dssi.phishingawareness.landingpages.dto.LandingPageDtos.LandingPageResponse;
-import fr.dssi.phishingawareness.landingpages.dto.LandingPageDtos.PublicAwarenessPageResponse;
 import fr.dssi.phishingawareness.landingpages.service.LandingPageService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -43,20 +42,4 @@ public class LandingPageController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID id) { service.delete(id); }
-
-    @RestController
-    @RequestMapping("/api/public/awareness")
-    public static class PublicAwarenessController {
-
-        private final LandingPageService service;
-
-        public PublicAwarenessController(LandingPageService service) {
-            this.service = service;
-        }
-
-        @GetMapping("/{token}")
-        public PublicAwarenessPageResponse get(@PathVariable String token) {
-            return service.getPublicAwarenessPage(token);
-        }
-    }
 }

@@ -21,6 +21,7 @@ export type TrackingEventType =
   | 'LINK_CLICKED'
   | 'SUBMITTED_FORM'
   | 'TRAINING_VIEWED'
+  | 'TRAINING_COMPLETED'
   | 'QUIZ_COMPLETED';
 
 export interface User {
@@ -44,6 +45,7 @@ export interface Campaign {
   status: CampaignStatus;
   ownerId?: string | null;
   validatorId?: string | null;
+  landingPageId?: string | null;
   internalDomainAllowlist: string;
   validationRequired: boolean;
   validatedAt?: string | null;
@@ -53,6 +55,7 @@ export interface Campaign {
 export interface CampaignRequest {
   name: string;
   ownerId?: string | null;
+  landingPageId?: string | null;
   internalDomainAllowlist: string;
   validationRequired: boolean;
 }
@@ -120,4 +123,10 @@ export interface PublicTrackingEventRequest {
 
 export interface PublicTrackingEventResponse {
   status: string;
+}
+
+export interface PublicAwarenessPage {
+  title: string;
+  educationalMessage: string;
+  content: string;
 }

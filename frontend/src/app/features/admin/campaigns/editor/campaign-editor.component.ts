@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { User } from '../../../../core/models/api.models';
+import { LandingPage, User } from '../../../../core/models/api.models';
 import { ApiService } from '../../../../core/services/api.service';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { LoadingStateComponent } from '../../../../shared/components/loading-state/loading-state.component';
@@ -38,6 +38,15 @@ import { LoadingStateComponent } from '../../../../shared/components/loading-sta
             }
           </select>
         </label>
+        <label>
+          Page de sensibilisation interne
+          <select formControlName="landingPageId">
+            <option value="">Page générique</option>
+            @for (page of landingPages(); track page.id) {
+              <option [value]="page.id">{{ page.name }}</option>
+            }
+          </select>
+        </label>
         <label class="checkbox-row">
           <input type="checkbox" formControlName="validationRequired" />
           Validation obligatoire avant lancement
@@ -60,6 +69,7 @@ export class CampaignEditorComponent implements OnInit {
   readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(200)]],
     ownerId: [''],
+    landingPageId: [''],
     internalDomainAllowlist: ['example.internal', [Validators.required]],
     validationRequired: [true]
   });
@@ -67,6 +77,7 @@ export class CampaignEditorComponent implements OnInit {
   readonly saving = signal(false);
   readonly error = signal<string | null>(null);
   readonly users = signal<User[]>([]);
+  readonly landingPages = signal<LandingPage[]>([]);
   campaignId: string | null = null;
 
   constructor(
@@ -81,6 +92,10 @@ export class CampaignEditorComponent implements OnInit {
       next: (users) => this.users.set(users.filter((user) => user.active)),
       error: () => this.users.set([])
     });
+    this.api.listLandingPages().subscribe({
+      next: (pages) => this.landingPages.set(pages),
+      error: () => this.landingPages.set([])
+    });
 
     this.campaignId = this.route.snapshot.paramMap.get('id');
     if (!this.campaignId) {
@@ -92,6 +107,7 @@ export class CampaignEditorComponent implements OnInit {
         this.form.patchValue({
           name: campaign.name,
           ownerId: campaign.ownerId ?? '',
+          landingPageId: campaign.landingPageId ?? '',
           internalDomainAllowlist: campaign.internalDomainAllowlist,
           validationRequired: campaign.validationRequired
         });
@@ -113,6 +129,7 @@ export class CampaignEditorComponent implements OnInit {
     const request = {
       name: value.name,
       ownerId: value.ownerId || null,
+      landingPageId: value.landingPageId || null,
       internalDomainAllowlist: value.internalDomainAllowlist,
       validationRequired: value.validationRequired
     };

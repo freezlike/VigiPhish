@@ -13,6 +13,7 @@ import {
   LandingPageRequest,
   PublicTrackingEventRequest,
   PublicTrackingEventResponse,
+  PublicAwarenessPage,
   Quiz,
   QuizRequest,
   User,
@@ -137,5 +138,9 @@ export class ApiService {
 
   recordPublicEvent(request: PublicTrackingEventRequest) {
     return this.http.post<PublicTrackingEventResponse>('/api/public/tracking/events', request);
+  }
+
+  getPublicAwarenessPage(token: string) {
+    return this.http.get<PublicAwarenessPage>(`/api/public/awareness/${encodeURIComponent(token)}`);
   }
 }
