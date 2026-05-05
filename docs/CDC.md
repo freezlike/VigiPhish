@@ -35,6 +35,29 @@ Créer une plateforme interne de sensibilisation au phishing pour une DSSI. L'ap
 - Mailpit pour les tests locaux d'email.
 - Architecture prête pour RBAC, audit, validation de campagne et RGPD.
 
+## Modules Backend Implementes
+
+- Utilisateurs internes et groupes.
+- Campagnes avec cycle de vie contrôlé et validation avant lancement.
+- Modèles email pédagogiques.
+- Pages de formation.
+- Quiz.
+- Cibles de campagne avec tokens UUID/hash/expiration.
+- Evénements de tracking publics strictement allowlistés.
+- Audit logs pour mutations admin.
+- Rapports agrégés.
+- Paramètres système non secrets.
+
+## Interfaces Frontend Implementées
+
+- Dashboard administrateur.
+- Liste, création, édition et détail de campagne avec timeline de statut.
+- Gestion et prévisualisation des templates email.
+- Gestion des pages de formation et quiz.
+- Import CSV utilisateurs sans champ de mot de passe.
+- Rapports agrégés et audit logs.
+- Pages publiques pédagogiques de formation et quiz.
+
 ## Exigences De Lancement
 
 Le projet doit démarrer localement avec:

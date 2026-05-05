@@ -14,7 +14,7 @@ Mailpit est utilisé uniquement pour les tests locaux d'email.
 
 Package racine: `fr.dssi.phishingawareness`.
 
-Structure modulaire prévue:
+Structure modulaire:
 
 - `auth`
 - `users`
@@ -31,19 +31,61 @@ Structure modulaire prévue:
 - `mail`
 - `shared`
 
-Chaque module métier doit suivre la forme `controller -> service -> repository`, avec DTOs séparés des entités et mappers si nécessaire.
+Les modules métier implémentés suivent `controller -> service -> repository`, avec DTOs séparés des entités. Les contrôleurs restent fins; les règles de cycle de vie, de token, d'audit et de sécurité publique sont dans les services.
+
+Modules backend actifs:
+
+- `users`: utilisateurs internes, rôles applicatifs, activation.
+- `groups`: groupes d'utilisateurs internes.
+- `campaigns`: campagnes et cycle `DRAFT -> PENDING_VALIDATION -> VALIDATED -> SCHEDULED -> RUNNING -> COMPLETED`, avec annulation contrôlée.
+- `templates`: modèles email pédagogiques.
+- `landingpages`: pages de formation sans collecte de contenu sensible.
+- `quizzes`: quiz de sensibilisation.
+- `tracking`: cibles de campagne, génération de tokens, validation de token, événements publics autorisés.
+- `reports`: rapports agrégés.
+- `audit`: journalisation des mutations admin.
+- `settings`: paramètres système non secrets.
+- `shared`: santé, sécurité, CORS et erreurs centralisées.
 
 ## Frontend
 
 Le frontend utilise des composants standalone, le routage lazy-loaded, des services HTTP, des interceptors et des guards.
 
-Structure initiale:
+Structure:
 
 - `core/models`
 - `core/services`
 - `core/interceptors`
 - `core/guards`
-- `features/home`
+- `shared/components`
+- `features/admin`
+- `features/public`
+
+Routes principales:
+
+- `/admin`: tableau de bord.
+- `/admin/campaigns`: liste des campagnes.
+- `/admin/campaigns/new` et `/admin/campaigns/:id/edit`: création et édition.
+- `/admin/campaigns/:id`: détail, timeline, actions de validation/lancement et cibles.
+- `/admin/email-templates`, `/admin/email-templates/new`, `/admin/email-templates/:id/edit`, `/admin/email-templates/:id/preview`.
+- `/admin/landing-pages`, `/admin/landing-pages/new`, `/admin/landing-pages/:id/edit`.
+- `/admin/quizzes`, `/admin/quizzes/new`, `/admin/quizzes/:id/edit`.
+- `/admin/user-import`: import CSV sans mot de passe.
+- `/admin/reports`: rapport campagne agrégé.
+- `/admin/audit-logs`: journal d'audit.
+- `/public/training/:token`: page publique pédagogique.
+- `/public/quiz/:token`: quiz public pédagogique.
+
+Composants réutilisables:
+
+- `page-header`
+- `status-badge`
+- `confirm-dialog`
+- `data-table`
+- `empty-state`
+- `loading-state`
+
+Les guards frontend appliquent les rôles attendus pour masquer les routes non autorisées côté interface. Les interceptors préparent l'envoi d'un bearer token si l'authentification d'entreprise en fournit un et centralisent la journalisation des erreurs HTTP.
 
 ## Infrastructure Docker
 
@@ -54,3 +96,14 @@ Structure initiale:
 - `backend-test` et `frontend-test`: services de vérification.
 
 Le reverse proxy Nginx du frontend transmet `/api/*` vers `backend:8080`.
+
+## Donnees Et Migrations
+
+Flyway gère le schéma PostgreSQL:
+
+- `V1__initial_schema.sql`: tables socles.
+- `V2__business_modules_and_dev_seed.sql`: tables de groupes/cibles/paramètres et données locales de développement.
+- `V3__align_token_hash_type.sql`: alignement du type `token_hash` attendu par Hibernate.
+- `V4__system_settings_uuid_identifier.sql`: identifiant UUID primaire pour les paramètres système.
+
+Hibernate est configuré en validation de schéma; l'application ne crée pas implicitement les tables au runtime.

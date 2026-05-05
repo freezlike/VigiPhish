@@ -14,12 +14,20 @@ Services:
 - Mailpit: http://localhost:8025
 - PostgreSQL: localhost:5432
 
+Si `.env` surcharge les ports, utiliser les valeurs locales correspondantes. Exemple de ce poste: frontend `4205`, backend `8085`, Mailpit UI `9025`.
+
 ## Verification
 
 Build et démarrage Docker:
 
 ```bash
 docker compose up --build
+```
+
+Vérification santé backend:
+
+```bash
+curl -s http://127.0.0.1:${BACKEND_PORT:-8080}/api/health
 ```
 
 Tests backend:
@@ -31,6 +39,13 @@ docker compose run --rm backend-test
 Tests frontend:
 
 ```bash
+docker compose run --rm frontend-test
+```
+
+Après ajout ou modification de specs frontend, reconstruire l'image de test si nécessaire:
+
+```bash
+docker compose build frontend-test
 docker compose run --rm frontend-test
 ```
 
@@ -50,7 +65,8 @@ docker compose down -v
 
 - Si le backend ne démarre pas, vérifier que le service `postgres` est healthy.
 - Si le frontend affiche le backend indisponible, vérifier `backend` et le proxy Nginx `/api`.
-- Si les migrations échouent, consulter les logs backend et l'état du volume PostgreSQL.
+- Si les migrations échouent, consulter les logs backend et l'état du volume PostgreSQL avec `docker compose logs backend`.
+- Ne pas modifier une migration Flyway déjà appliquée; ajouter une nouvelle migration `Vx__...sql`.
 
 ## Contraintes Production
 

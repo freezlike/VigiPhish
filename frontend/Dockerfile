@@ -4,7 +4,7 @@ COPY package.json package-lock.json* ./
 RUN npm install
 
 FROM dependencies AS build
-COPY angular.json tsconfig*.json proxy.conf.json ./
+COPY angular.json karma.conf.js tsconfig*.json proxy.conf.json ./
 COPY public ./public
 COPY src ./src
 RUN npm run build
@@ -14,7 +14,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends chromium \
     && rm -rf /var/lib/apt/lists/*
 ENV CHROME_BIN=/usr/bin/chromium
-COPY angular.json tsconfig*.json proxy.conf.json ./
+COPY angular.json karma.conf.js tsconfig*.json proxy.conf.json ./
 COPY public ./public
 COPY src ./src
 

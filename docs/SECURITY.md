@@ -15,7 +15,12 @@ Cette application est strictement défensive, pédagogique et interne. Elle ne d
 
 ## Authentification Et Autorisation
 
-La configuration initiale autorise uniquement `GET /api/health` sans authentification. Les futurs endpoints doivent appliquer RBAC avec les rôles:
+La configuration autorise sans authentification:
+
+- `GET /api/health`
+- `/api/public/**`
+
+Tous les endpoints admin sont protégés et utilisent `@PreAuthorize` avec les rôles:
 
 - `ROLE_DSSI_ADMIN`
 - `ROLE_CAMPAIGN_MANAGER`
@@ -24,26 +29,50 @@ La configuration initiale autorise uniquement `GET /api/health` sans authentific
 - `ROLE_AUDITOR`
 - `ROLE_USER`
 
+Le squelette ne stocke pas de mots de passe applicatifs. L'intégration d'authentification d'entreprise devra être ajoutée via configuration et fournisseur d'identité interne.
+
+Le frontend applique aussi des guards par rôle pour l'ergonomie et la réduction d'exposition UI. Cette protection ne remplace pas les contrôles backend.
+
 ## Tracking
 
-Les tokens de tracking doivent être:
+Les tokens de tracking sont:
 
 - Longs.
 - Aléatoires.
 - Uniques.
 - Non devinables.
 - Expirables.
-- Persistés uniquement sous forme de hash.
+- Persistés uniquement sous forme de hash SHA-256.
 
-La migration initiale prévoit `tracking_tokens.token_hash` et ne contient pas de colonne pour stocker un token brut.
+La création d'une cible de campagne retourne le token brut une seule fois dans la réponse API. La base conserve uniquement `campaign_targets.token_hash` et `expires_at`.
+
+Les endpoints publics de tracking n'acceptent que:
+
+- `EMAIL_OPENED`
+- `LINK_CLICKED`
+- `SUBMITTED_FORM`
+- `TRAINING_VIEWED`
+- `QUIZ_COMPLETED`
+
+`EMAIL_SENT` est rejeté sur les endpoints publics. Un token expiré ou inconnu ne révèle pas d'identité utilisateur.
+
+Pour `SUBMITTED_FORM`, le backend force des métadonnées sûres et n'enregistre jamais les champs soumis.
+
+Les pages publiques Angular `/public/training/:token` et `/public/quiz/:token` ne demandent aucun secret et ne transmettent que `TRAINING_VIEWED` ou `QUIZ_COMPLETED`.
 
 ## Audit
 
-Toute action administrative doit produire un enregistrement dans `audit_logs` avec acteur, action, cible, date et détails minimaux.
+Toute mutation administrative implémentée produit un enregistrement dans `audit_logs` avec acteur, action, cible, date et détails minimaux.
 
 ## Campagnes
 
-Les campagnes doivent être validées avant lancement. Le modèle initial prévoit des statuts de validation et un validateur distinct pour préparer un mode four-eyes.
+Les campagnes doivent être validées avant lancement. Le cycle implémenté impose:
+
+```text
+DRAFT -> PENDING_VALIDATION -> VALIDATED -> SCHEDULED -> RUNNING -> COMPLETED
+```
+
+Le passage à `VALIDATED` est réservé aux rôles `ROLE_DSSI_ADMIN` et `ROLE_CAMPAIGN_VALIDATOR`. `CANCELLED` est possible avant fin définitive.
 
 ## Emails
 
