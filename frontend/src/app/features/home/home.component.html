@@ -1,0 +1,25 @@
+<main class="shell">
+  <section class="status-panel" aria-labelledby="page-title">
+    <div class="title-block">
+      <p class="eyebrow">Plateforme interne DSSI</p>
+      <h1 id="page-title">DSSI Phishing Awareness</h1>
+      <p class="summary">
+        Sensibilisation defensive, gouvernance des campagnes, formation et reporting conformes RGPD.
+      </p>
+    </div>
+
+    <div class="health" [class.health--up]="state() === 'up'" [class.health--down]="state() === 'unavailable'">
+      <span class="health__label">Backend</span>
+      <strong>{{ state() === 'loading' ? 'Verification' : health()?.status ?? 'Indisponible' }}</strong>
+      @if (health(); as currentHealth) {
+        <span class="health__meta">
+          {{ currentHealth.application }} · {{ currentHealth.checkedAt | date:'short' }}
+        </span>
+      } @else if (error()) {
+        <span class="health__meta">{{ error() }}</span>
+      } @else {
+        <span class="health__meta">Connexion en cours</span>
+      }
+    </div>
+  </section>
+</main>

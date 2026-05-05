@@ -1,0 +1,28 @@
+model = "gpt-5.5"
+model_provider = "openai"
+
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+project_root_markers = [".git", "docker-compose.yml", "pom.xml", "package.json"]
+project_doc_max_bytes = 120000
+
+model_reasoning_effort = "high"
+model_verbosity = "medium"
+
+[sandbox_workspace_write]
+network_access = true
+writable_roots = ["."]
+
+[profiles.safe]
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[profiles.review]
+approval_policy = "on-request"
+sandbox_mode = "read-only"
+model_reasoning_effort = "high"
+
+[[skills.config]]
+path = ".agents/skills/dssi-phishing-awareness"
+enabled = true

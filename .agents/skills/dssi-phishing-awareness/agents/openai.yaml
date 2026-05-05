@@ -1,0 +1,7 @@
+interface:
+  display_name: "DSSI Phishing Awareness"
+  short_description: "Build and review the internal phishing awareness platform safely."
+  default_prompt: "Use the DSSI phishing awareness skill and enforce defensive, privacy-first constraints."
+
+policy:
+  allow_implicit_invocation: true

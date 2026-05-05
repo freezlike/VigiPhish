@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: dssi-phishing-awareness
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/dssi_phishing_awareness}
+    username: ${SPRING_DATASOURCE_USERNAME:dssi_app}
+    password: ${SPRING_DATASOURCE_PASSWORD:change-me-local-only}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+
+app:
+  allowed-origins: ${APP_ALLOWED_ORIGINS:http://localhost:4200}
+  internal-email-domains: ${APP_INTERNAL_EMAIL_DOMAINS:example.internal}
+  public-base-url: ${APP_PUBLIC_BASE_URL:http://localhost:4200}
