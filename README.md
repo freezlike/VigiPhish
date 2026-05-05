@@ -81,10 +81,10 @@ Implemented frontend areas:
 
 - Admin dashboard, campaigns list/editor/detail with status timeline and launch warnings.
 - Email templates list/editor/preview.
-- Landing page and quiz management.
+- Internal awareness page and quiz management.
 - CSV user import screen that rejects password-oriented workflows.
 - Campaign report and audit log screens.
-- Public training and quiz pages under `/public/training/:token` and `/public/quiz/:token`.
+- Public/internal-by-network awareness and quiz pages under `/public/awareness/:token`, `/public/training/:token`, and `/public/quiz/:token`.
 
 ## Security Guardrails
 

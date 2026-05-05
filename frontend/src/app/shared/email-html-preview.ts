@@ -7,7 +7,7 @@ export function buildEmailPreviewDocument(rawHtml: string | null | undefined): s
 
   document.querySelectorAll('script, iframe, object, embed, form, input[type="password"]').forEach((element) => element.remove());
   document.querySelectorAll('*').forEach((element) => {
-    [...element.attributes].forEach((attribute) => {
+    Array.from(element.attributes).forEach((attribute) => {
       const name = attribute.name.toLowerCase();
       const value = attribute.value.toLowerCase();
       if (name.startsWith('on') || value.includes('javascript:')) {

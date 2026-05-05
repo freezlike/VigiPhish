@@ -8,19 +8,37 @@ import { PageHeaderComponent } from '../../../../shared/components/page-header/p
   selector: 'app-landing-page-editor',
   imports: [ReactiveFormsModule, RouterLink, PageHeaderComponent],
   template: `
-    <app-page-header [title]="pageId ? 'Modifier la page' : 'Nouvelle page'" description="Expliquez les signaux de vigilance sans demander de secret.">
+    <app-page-header [title]="pageId ? 'Modifier la page' : 'Nouvelle page de sensibilisation'" description="Créez une page informative interne sans formulaire ni collecte de contenu.">
       <a class="button button-ghost" routerLink="/admin/landing-pages">Retour</a>
     </app-page-header>
-    <form class="form-panel" [formGroup]="form" (ngSubmit)="save()">
-      <label>Nom <input formControlName="name" /></label>
-      <label>Message pédagogique <textarea formControlName="educationalMessage" rows="4"></textarea></label>
-      <label>Contenu <textarea formControlName="content" rows="10"></textarea></label>
-      <div class="compliance-warning">Aucun champ de mot de passe ou secret ne doit être demandé ni conservé.</div>
-      <div class="form-actions">
-        <button type="button" class="button button-ghost" routerLink="/admin/landing-pages">Annuler</button>
-        <button type="submit" class="button" [disabled]="form.invalid || saving()">Enregistrer</button>
-      </div>
-    </form>
+    <div class="editor-preview-grid">
+      <form class="form-panel" [formGroup]="form" (ngSubmit)="save()">
+        <label>Titre affiché <input formControlName="name" autocomplete="off" /></label>
+        <label>Message d'introduction <textarea formControlName="educationalMessage" rows="4"></textarea></label>
+        <label>Contenu informatif <textarea formControlName="content" rows="12"></textarea></label>
+        <div class="compliance-warning">Page informative uniquement: aucun formulaire, aucun champ de mot de passe, aucune collecte de contenu sensible.</div>
+        <div class="form-actions">
+          <button type="button" class="button button-ghost" routerLink="/admin/landing-pages">Annuler</button>
+          <button type="submit" class="button" [disabled]="form.invalid || saving()">Enregistrer</button>
+        </div>
+      </form>
+      <aside class="panel html-viewer-panel">
+        <div class="html-viewer-toolbar">
+          <span>Aperçu page interne</span>
+          <small>rendu texte sécurisé</small>
+        </div>
+        <section class="public-panel embedded-preview">
+          <p class="eyebrow">Sensibilisation interne DSSI</p>
+          <h1>{{ form.controls.name.value || 'Titre de la page' }}</h1>
+          <p>{{ form.controls.educationalMessage.value || 'Message pédagogique introductif.' }}</p>
+          <div class="awareness-content">
+            @for (paragraph of contentParagraphs(); track paragraph) {
+              <p>{{ paragraph }}</p>
+            }
+          </div>
+        </section>
+      </aside>
+    </div>
   `
 })
 export class LandingPageEditorComponent implements OnInit {
@@ -48,5 +66,9 @@ export class LandingPageEditorComponent implements OnInit {
     const request = this.form.getRawValue();
     const call = this.pageId ? this.api.updateLandingPage(this.pageId, request) : this.api.createLandingPage(request);
     call.subscribe({ next: () => this.router.navigate(['/admin/landing-pages']), error: () => this.saving.set(false) });
+  }
+
+  contentParagraphs(): string[] {
+    return (this.form.controls.content.value || 'Contenu de sensibilisation.').split(/\n+/).map((value) => value.trim()).filter(Boolean);
   }
 }

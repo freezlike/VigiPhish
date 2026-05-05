@@ -42,6 +42,14 @@ Tests frontend:
 docker compose run --rm frontend-test
 ```
 
+Test manuel d'une page de sensibilisation:
+
+1. Créer une page dans `Admin > Pages sensibilisation`.
+2. Créer ou modifier une campagne et sélectionner cette page.
+3. Ajouter une cible de campagne pour obtenir le token brut affiché une seule fois.
+4. Ouvrir `http://<frontend-host>/public/awareness/<token>`.
+5. Vérifier dans le rapport campagne les événements `LINK_CLICKED`, `TRAINING_VIEWED` et `TRAINING_COMPLETED`.
+
 Après ajout ou modification de specs frontend, reconstruire l'image de test si nécessaire:
 
 ```bash

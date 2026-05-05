@@ -6,9 +6,9 @@ Créer une plateforme interne de sensibilisation au phishing pour une DSSI. L'ap
 
 ## Perimetre Autorise
 
-- Gestion des utilisateurs internes, groupes, campagnes, modèles pédagogiques, pages de formation, quiz, rapports et audit.
+- Gestion des utilisateurs internes, groupes, campagnes, modèles pédagogiques, pages internes de sensibilisation, quiz, rapports et audit.
 - Simulation défensive limitée aux domaines internes autorisés.
-- Collecte d'événements de sensibilisation: envoi, ouverture, clic, soumission simulée, consultation de formation, quiz.
+- Collecte d'événements de sensibilisation: envoi, ouverture, clic, soumission simulée sans contenu, consultation de page, complétion de page, quiz.
 - Aucune collecte de contenu saisi dans les formulaires simulés.
 
 ## Hors Perimetre
@@ -40,7 +40,7 @@ Créer une plateforme interne de sensibilisation au phishing pour une DSSI. L'ap
 - Utilisateurs internes et groupes.
 - Campagnes avec cycle de vie contrôlé et validation avant lancement.
 - Modèles email pédagogiques.
-- Pages de formation.
+- Pages internes de sensibilisation reliables aux campagnes.
 - Quiz.
 - Cibles de campagne avec tokens UUID/hash/expiration.
 - Evénements de tracking publics strictement allowlistés.
@@ -53,10 +53,10 @@ Créer une plateforme interne de sensibilisation au phishing pour une DSSI. L'ap
 - Dashboard administrateur.
 - Liste, création, édition et détail de campagne avec timeline de statut.
 - Gestion et prévisualisation des templates email.
-- Gestion des pages de formation et quiz.
+- Gestion des pages internes de sensibilisation et quiz.
 - Import CSV utilisateurs sans champ de mot de passe.
 - Rapports agrégés et audit logs.
-- Pages publiques pédagogiques de formation et quiz.
+- Pages internes par token pour mesurer l'impact pédagogique sans login collaborateur et sans fuite d'identité.
 
 ## Exigences De Lancement
 

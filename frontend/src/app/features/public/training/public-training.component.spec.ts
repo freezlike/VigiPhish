@@ -9,7 +9,12 @@ describe('PublicTrainingComponent', () => {
   let api: jasmine.SpyObj<ApiService>;
 
   beforeEach(async () => {
-    api = jasmine.createSpyObj<ApiService>('ApiService', ['recordPublicEvent']);
+    api = jasmine.createSpyObj<ApiService>('ApiService', ['recordPublicEvent', 'getPublicAwarenessPage']);
+    api.getPublicAwarenessPage.and.returnValue(of({
+      title: 'Page test',
+      educationalMessage: 'Message interne de sensibilisation',
+      content: 'Aucun secret ne doit être saisi.'
+    }));
     api.recordPublicEvent.and.returnValue(of({ status: 'RECORDED' }));
 
     await TestBed.configureTestingModule({
@@ -25,7 +30,10 @@ describe('PublicTrainingComponent', () => {
   });
 
   it('records a training view without submitting sensitive data', () => {
+    expect(api.getPublicAwarenessPage).toHaveBeenCalledWith('abc');
+    expect(api.recordPublicEvent).toHaveBeenCalledWith({ token: 'abc', eventType: 'LINK_CLICKED' });
     expect(api.recordPublicEvent).toHaveBeenCalledWith({ token: 'abc', eventType: 'TRAINING_VIEWED' });
-    expect(fixture.nativeElement.textContent).toContain('Reconnaître les signaux');
+    expect(fixture.nativeElement.textContent).toContain('Page test');
+    expect(fixture.nativeElement.textContent).toContain('Aucun secret');
   });
 });

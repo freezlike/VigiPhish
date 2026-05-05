@@ -57,7 +57,7 @@ class CampaignTargetServiceTest {
         UUID campaignId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
         Instant expiresAt = Instant.now().plusSeconds(3600);
-        when(campaignService.requireCampaign(campaignId)).thenReturn(new CampaignEntity(campaignId, "Campaign", CampaignStatus.DRAFT, userId, "example.internal", true, Instant.now(), Instant.now()));
+        when(campaignService.requireCampaign(campaignId)).thenReturn(new CampaignEntity(campaignId, "Campaign", CampaignStatus.DRAFT, userId, null, "example.internal", true, Instant.now(), Instant.now()));
         when(userService.requireUser(userId)).thenReturn(new UserEntity(userId, "user@example.internal", "User", UserRole.ROLE_USER, true, Instant.now(), Instant.now()));
         when(tokenService.generateRawToken()).thenReturn("raw-token");
         when(tokenService.hashToken("raw-token")).thenReturn("a".repeat(64));

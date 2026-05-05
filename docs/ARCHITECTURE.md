@@ -39,7 +39,7 @@ Modules backend actifs:
 - `groups`: groupes d'utilisateurs internes.
 - `campaigns`: campagnes et cycle `DRAFT -> PENDING_VALIDATION -> VALIDATED -> SCHEDULED -> RUNNING -> COMPLETED`, avec annulation contrôlée.
 - `templates`: modèles email pédagogiques.
-- `landingpages`: pages de formation sans collecte de contenu sensible.
+- `landingpages`: pages de sensibilisation internes, informatives, liées aux campagnes et servies par token sans fuite d'identité.
 - `quizzes`: quiz de sensibilisation.
 - `tracking`: cibles de campagne, génération de tokens, validation de token, événements publics autorisés.
 - `reports`: rapports agrégés.
@@ -68,12 +68,12 @@ Routes principales:
 - `/admin/campaigns/new` et `/admin/campaigns/:id/edit`: création et édition.
 - `/admin/campaigns/:id`: détail, timeline, actions de validation/lancement et cibles.
 - `/admin/email-templates`, `/admin/email-templates/new`, `/admin/email-templates/:id/edit`, `/admin/email-templates/:id/preview`.
-- `/admin/landing-pages`, `/admin/landing-pages/new`, `/admin/landing-pages/:id/edit`.
+- `/admin/landing-pages`, `/admin/landing-pages/new`, `/admin/landing-pages/:id/edit`: pages de sensibilisation avec aperçu texte sécurisé.
 - `/admin/quizzes`, `/admin/quizzes/new`, `/admin/quizzes/:id/edit`.
 - `/admin/user-import`: import CSV sans mot de passe.
 - `/admin/reports`: rapport campagne agrégé.
 - `/admin/audit-logs`: journal d'audit.
-- `/public/training/:token`: page publique pédagogique.
+- `/public/training/:token` et `/public/awareness/:token`: page interne de sensibilisation chargée depuis la campagne via token.
 - `/public/quiz/:token`: quiz public pédagogique.
 
 Composants réutilisables:
@@ -105,5 +105,6 @@ Flyway gère le schéma PostgreSQL:
 - `V2__business_modules_and_dev_seed.sql`: tables de groupes/cibles/paramètres et données locales de développement.
 - `V3__align_token_hash_type.sql`: alignement du type `token_hash` attendu par Hibernate.
 - `V4__system_settings_uuid_identifier.sql`: identifiant UUID primaire pour les paramètres système.
+- `V5__campaign_awareness_pages.sql`: liaison campagne -> page de sensibilisation et événement `TRAINING_COMPLETED`.
 
 Hibernate est configuré en validation de schéma; l'application ne crée pas implicitement les tables au runtime.

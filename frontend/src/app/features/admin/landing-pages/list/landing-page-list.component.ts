@@ -10,13 +10,13 @@ import { LoadingStateComponent } from '../../../../shared/components/loading-sta
   selector: 'app-landing-page-list',
   imports: [RouterLink, PageHeaderComponent, EmptyStateComponent, LoadingStateComponent],
   template: `
-    <app-page-header title="Pages de formation" description="Pages publiques éducatives sans collecte de contenu sensible.">
+    <app-page-header title="Pages de sensibilisation" description="Pages internes informatives, reliées aux campagnes pour mesurer l'impact pédagogique.">
       <a class="button" routerLink="/admin/landing-pages/new">Nouvelle</a>
     </app-page-header>
     @if (loading()) {
       <app-loading-state label="Chargement des pages" />
     } @else if (pages().length === 0) {
-      <app-empty-state title="Aucune page" message="Ajoutez une page de formation claire et pédagogique." />
+      <app-empty-state title="Aucune page" message="Ajoutez une page de sensibilisation claire, interne et sans formulaire." />
     } @else {
       <section class="panel list-panel">
         @for (page of pages(); track page.id) {

@@ -608,6 +608,18 @@ textarea {
   line-height: 1.65;
 }
 
+.embedded-preview {
+  width: 100%;
+  min-height: 420px;
+  place-self: stretch;
+  padding: 24px;
+}
+
+.awareness-content {
+  display: grid;
+  gap: 6px;
+}
+
 .learning-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

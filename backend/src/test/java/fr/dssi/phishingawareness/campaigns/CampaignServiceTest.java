@@ -13,6 +13,7 @@ import fr.dssi.phishingawareness.campaigns.entity.CampaignEntity;
 import fr.dssi.phishingawareness.campaigns.entity.CampaignStatus;
 import fr.dssi.phishingawareness.campaigns.repository.CampaignRepository;
 import fr.dssi.phishingawareness.campaigns.service.CampaignService;
+import fr.dssi.phishingawareness.landingpages.repository.LandingPageRepository;
 import fr.dssi.phishingawareness.shared.exception.BadRequestException;
 import java.time.Instant;
 import java.util.Optional;
@@ -32,11 +33,14 @@ class CampaignServiceTest {
     @Mock
     private AuditService auditService;
 
+    @Mock
+    private LandingPageRepository landingPageRepository;
+
     private CampaignService campaignService;
 
     @BeforeEach
     void setUp() {
-        campaignService = new CampaignService(campaignRepository, auditService);
+        campaignService = new CampaignService(campaignRepository, landingPageRepository, auditService);
     }
 
     @Test
@@ -68,13 +72,13 @@ class CampaignServiceTest {
     @Test
     void createsCampaignAsDraft() {
         when(campaignRepository.save(any(CampaignEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        CampaignRequest request = new CampaignRequest("Awareness Q2", UUID.randomUUID(), "example.internal", true);
+        CampaignRequest request = new CampaignRequest("Awareness Q2", UUID.randomUUID(), null, "example.internal", true);
 
         assertThat(campaignService.create(request).status()).isEqualTo(CampaignStatus.DRAFT);
     }
 
     private CampaignEntity campaign(UUID id, CampaignStatus status) {
         Instant now = Instant.now();
-        return new CampaignEntity(id, "Campaign", status, UUID.randomUUID(), "example.internal", true, now, now);
+        return new CampaignEntity(id, "Campaign", status, UUID.randomUUID(), null, "example.internal", true, now, now);
     }
 }

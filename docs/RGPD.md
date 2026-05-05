@@ -22,6 +22,8 @@ Les résultats nominatifs doivent être réservés aux rôles autorisés. Les vu
 
 Les rapports administratifs implémentés exposent des agrégats par campagne et par type d'événement. Les endpoints publics ne retournent pas d'identité utilisateur.
 
+Les pages internes de sensibilisation chargées par token retournent uniquement du contenu pédagogique lié à la campagne. Elles ne retournent ni email, ni nom, ni identifiant utilisateur, ni hash de token.
+
 L'interface frontend évite d'afficher les tokens publics en dehors de la réponse de création d'une cible, où ils sont signalés comme affichés une seule fois.
 
 ## Conservation
@@ -32,7 +34,7 @@ Les données locales de développement sont créées par Flyway avec des adresse
 
 ## Transparence
 
-Les contenus pédagogiques doivent indiquer clairement le cadre interne de sensibilisation lorsqu'un utilisateur atteint une page de formation.
+Les contenus pédagogiques doivent indiquer clairement le cadre interne de sensibilisation lorsqu'un utilisateur atteint une page de sensibilisation ou de formation.
 
 ## Securite Des Donnees
 

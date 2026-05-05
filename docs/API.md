@@ -64,6 +64,8 @@ Validation role: `ROLE_DSSI_ADMIN`, `ROLE_CAMPAIGN_VALIDATOR`.
 - `POST /api/admin/campaigns/{id}/complete`
 - `POST /api/admin/campaigns/{id}/cancel`
 
+`CampaignRequest` accepts an optional `landingPageId`. When present, the campaign public training link displays that internal awareness page after token validation.
+
 Lifecycle:
 
 ```text
@@ -85,7 +87,7 @@ Required roles: `ROLE_DSSI_ADMIN`, `ROLE_CAMPAIGN_MANAGER`.
 
 Templates must remain educational and internal. They must not implement external spoofing or antispam evasion.
 
-## Landing Pages
+## Landing Pages / Pages De Sensibilisation
 
 Path: `/api/admin/landing-pages`
 
@@ -96,7 +98,15 @@ Required roles: `ROLE_DSSI_ADMIN`, `ROLE_CAMPAIGN_MANAGER`.
 - `PUT /api/admin/landing-pages/{id}`
 - `DELETE /api/admin/landing-pages/{id}`
 
-Landing pages are pedagogical. Simulated forms must not store submitted field values.
+Landing pages are now used as internal awareness pages. They are informational only: no form, no password field and no submitted content storage.
+
+## Public Awareness Pages
+
+Path: `/api/public/awareness`
+
+- `GET /api/public/awareness/{token}`
+
+The endpoint validates the tracking token, checks expiration and returns only the awareness page content linked to the campaign. It does not expose campaign target identity, user identity, email address or token hash.
 
 ## Quizzes
 
@@ -132,6 +142,7 @@ Allowed public event types:
 - `LINK_CLICKED`
 - `SUBMITTED_FORM`
 - `TRAINING_VIEWED`
+- `TRAINING_COMPLETED`
 - `QUIZ_COMPLETED`
 
 `EMAIL_SENT` is admin/system-only and is rejected on public tracking endpoints.

@@ -52,13 +52,14 @@ Les endpoints publics de tracking n'acceptent que:
 - `LINK_CLICKED`
 - `SUBMITTED_FORM`
 - `TRAINING_VIEWED`
+- `TRAINING_COMPLETED`
 - `QUIZ_COMPLETED`
 
 `EMAIL_SENT` est rejeté sur les endpoints publics. Un token expiré ou inconnu ne révèle pas d'identité utilisateur.
 
 Pour `SUBMITTED_FORM`, le backend force des métadonnées sûres et n'enregistre jamais les champs soumis.
 
-Les pages publiques Angular `/public/training/:token` et `/public/quiz/:token` ne demandent aucun secret et ne transmettent que `TRAINING_VIEWED` ou `QUIZ_COMPLETED`.
+Les pages internes Angular `/public/training/:token`, `/public/awareness/:token` et `/public/quiz/:token` ne demandent aucun secret. La page de sensibilisation charge uniquement le contenu informatif associé à la campagne et ne transmet que des événements d'impact pédagogique comme `LINK_CLICKED`, `TRAINING_VIEWED`, `TRAINING_COMPLETED` ou `QUIZ_COMPLETED`.
 
 ## Audit
 
